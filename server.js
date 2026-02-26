@@ -1,17 +1,20 @@
 const express = require('express');
 const { createClient } = require('redis');
 const { v4: uuidv4 } = require('uuid');
+require('dotenv').config();
 
 const app = express();
 app.use(express.json());
 
-const redisClient = createClient();
+const redisClient = createClient({
+    url: process.env.REDIS_URL   // 🔥 important for deployment
+});
 
 redisClient.connect()
     .then(() => console.log("Redis Connected"))
     .catch(err => console.error("Redis Error", err));
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 const seats = ["A1", "A2", "A3", "A4", "A5"];
 
